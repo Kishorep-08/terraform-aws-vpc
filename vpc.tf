@@ -60,7 +60,7 @@ resource "aws_subnet" "database" {
   vpc_id     = aws_vpc.main.id
   cidr_block = var.database_subnet_cidrs[count.index]
   availability_zone = local.az_names[count.index]
-  map_public_ip_on_launch = true
+ 
   tags = merge (
     local.common_tags,
     {
@@ -146,7 +146,7 @@ resource "aws_route" "private_route" {
 resource "aws_route" "database_route" {
   route_table_id            = aws_route_table.route_table_database.id
   destination_cidr_block    = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.main.id
+  gateway_id = aws_nat_gateway.nat_gateway.id
 }
 
 # route table association for public subnet
